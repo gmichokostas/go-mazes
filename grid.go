@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"math/rand"
 )
@@ -42,6 +43,56 @@ func (g *Grid) RandomCell() *Cell {
 	column := rand.Intn(len(g.structure[row]))
 
 	return g.cell(row, column)
+}
+
+func (g *Grid) String() string {
+	var output bytes.Buffer
+
+	output.WriteString("+")
+	for i := 1; i <= g.columns; i++ {
+		output.WriteString("---+")
+	}
+	output.WriteString("\n")
+
+	for row := range g.eachRow() {
+		var top bytes.Buffer
+		var bottom bytes.Buffer
+
+		top.WriteString("|")
+		bottom.WriteString("+")
+
+		for _, cell := range row {
+			body := "   "
+			eastBoundary := func() string {
+				if cell.IsLinked(cell.east) {
+					return " "
+				}
+				return "|"
+			}()
+
+			top.WriteString(body)
+			top.WriteString(eastBoundary)
+
+			southBoundary := func() string {
+				if cell.IsLinked(cell.south) {
+					return "   "
+				}
+				return "---"
+			}()
+
+			corner := "+"
+
+			bottom.WriteString(southBoundary)
+			bottom.WriteString(corner)
+		}
+		output.WriteString(top.String())
+		output.WriteString("\n")
+		output.WriteString(bottom.String())
+		output.WriteString("\n")
+
+	}
+
+	return output.String()
 }
 
 // prepare creates a 2D slice of Cells
