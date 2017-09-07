@@ -1,4 +1,4 @@
-package mazes
+package main
 
 import "errors"
 
@@ -13,8 +13,8 @@ type Cell struct {
 	west  *Cell
 }
 
-// New creates a new Cell on the Grid
-func New(row, col int) (*Cell, error) {
+// NewCell creates a new Cell on the Grid
+func NewCell(row, col int) (*Cell, error) {
 	if row < 0 {
 		return nil, errors.New("The row must positive number")
 	}

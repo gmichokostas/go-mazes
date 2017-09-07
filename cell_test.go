@@ -1,11 +1,11 @@
-package mazes
+package main
 
 import (
 	"reflect"
 	"testing"
 )
 
-func TestNew(t *testing.T) {
+func TestNewCell(t *testing.T) {
 	type args struct {
 		row   int
 		col   int
@@ -38,13 +38,13 @@ func TestNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := New(tt.args.row, tt.args.col)
+			got, err := NewCell(tt.args.row, tt.args.col)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("New() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NewCell() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("New() = %v, want %v", got, tt.want)
+				t.Errorf("NewCell() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -57,7 +57,7 @@ func TestCell_Links(t *testing.T) {
 		links map[*Cell]bool
 	}
 
-	otherCell, _ := New(1, 2)
+	otherCell, _ := NewCell(1, 2)
 	tests := []struct {
 		name   string
 		fields fields
@@ -98,7 +98,7 @@ func TestCell_IsLinked(t *testing.T) {
 		cell *Cell
 	}
 
-	otherCell, _ := New(1, 2)
+	otherCell, _ := NewCell(1, 2)
 	tests := []struct {
 		name   string
 		fields fields
@@ -143,10 +143,10 @@ func TestCell_Neighbors(t *testing.T) {
 		west  *Cell
 	}
 
-	north, _ := New(0, 1)
-	south, _ := New(2, 1)
-	east, _ := New(1, 2)
-	west, _ := New(1, 0)
+	north, _ := NewCell(0, 1)
+	south, _ := NewCell(2, 1)
+	east, _ := NewCell(1, 2)
+	west, _ := NewCell(1, 0)
 
 	tests := []struct {
 		name   string
@@ -207,7 +207,7 @@ func TestCell_Link(t *testing.T) {
 		bidi bool
 	}
 
-	otherCell, _ := New(1, 2)
+	otherCell, _ := NewCell(1, 2)
 	tests := []struct {
 		name   string
 		fields fields
@@ -248,7 +248,7 @@ func TestCell_Unlink(t *testing.T) {
 		bidi bool
 	}
 
-	otherCell, _ := New(1, 2)
+	otherCell, _ := NewCell(1, 2)
 	tests := []struct {
 		name   string
 		fields fields
