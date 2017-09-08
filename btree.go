@@ -13,8 +13,7 @@ func init() {
 }
 
 // On applies the BTree algorithm on the given Grid
-func (bt BTree) On(grid *Grid) *Grid {
-
+func (bt BTree) On(grid *Grid) {
 	for cell := range grid.EachCell() {
 		neighbors := make([]*Cell, 0, 10)
 
@@ -37,6 +36,4 @@ func (bt BTree) On(grid *Grid) *Grid {
 			cell.Link(neighbor, true)
 		}
 	}
-
-	return grid
 }
