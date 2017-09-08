@@ -11,7 +11,8 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error create new grid: %v", err)
 	}
-
 	btree.On(grid)
+	grid.ToImage()
+
 	fmt.Println(grid)
 }
