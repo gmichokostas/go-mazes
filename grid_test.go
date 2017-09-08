@@ -94,7 +94,7 @@ func TestGrid_RandomCell(t *testing.T) {
 		structure [][]*Cell
 	}
 
-	cell, _ := NewCell(0, 0)
+	cell := NewCell(0, 0)
 
 	tests := []struct {
 		name   string
@@ -122,35 +122,6 @@ func TestGrid_RandomCell(t *testing.T) {
 	}
 }
 
-func TestGrid_prepare(t *testing.T) {
-	type fields struct {
-		rows    int
-		columns int
-	}
-	tests := []struct {
-		name    string
-		fields  fields
-		wantErr bool
-	}{
-		{
-			name:    "prepare the grid structure",
-			fields:  fields{rows: 3, columns: 3},
-			wantErr: false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			g := &Grid{
-				rows:    tt.fields.rows,
-				columns: tt.fields.columns,
-			}
-			if err := g.prepare(); (err != nil) != tt.wantErr {
-				t.Errorf("Grid.prepare() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
 func TestGrid_cell(t *testing.T) {
 	type fields struct {
 		rows      int
@@ -162,7 +133,7 @@ func TestGrid_cell(t *testing.T) {
 		col int
 	}
 
-	cell, _ := NewCell(0, 0)
+	cell := NewCell(0, 0)
 
 	tests := []struct {
 		name   string
@@ -185,6 +156,36 @@ func TestGrid_cell(t *testing.T) {
 			}
 			if got := g.cell(tt.args.row, tt.args.col); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Grid.cell() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGrid_prepare(t *testing.T) {
+	type fields struct {
+		rows    int
+		columns int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   int
+	}{
+		{
+			name:   "it has the right number of rows",
+			fields: fields{rows: 2, columns: 2},
+			want:   2,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := &Grid{
+				rows:    tt.fields.rows,
+				columns: tt.fields.columns,
+			}
+			g.prepare()
+			if got := len(g.structure); got != tt.want {
+				t.Errorf("g.stucture length = %v, want %v", got, tt.want)
 			}
 		})
 	}

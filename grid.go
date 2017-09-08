@@ -24,9 +24,7 @@ func NewGrid(rows, columns int) (*Grid, error) {
 	}
 
 	grid := &Grid{rows: rows, columns: columns}
-	if err := grid.prepare(); err != nil {
-		return nil, errors.New("Error while preparing the grid: " + err.Error())
-	}
+	grid.prepare()
 	grid.configureCells()
 
 	return grid, nil
@@ -45,6 +43,7 @@ func (g *Grid) RandomCell() *Cell {
 	return g.cell(row, column)
 }
 
+// String representation of the Grid
 func (g *Grid) String() string {
 	var output bytes.Buffer
 
@@ -62,6 +61,9 @@ func (g *Grid) String() string {
 		bottom.WriteString("+")
 
 		for _, cell := range row {
+			if cell == nil {
+				cell = NewCell(-1, -1)
+			}
 			body := "   "
 			eastBoundary := func() string {
 				if cell.IsLinked(cell.east) {
@@ -96,7 +98,7 @@ func (g *Grid) String() string {
 }
 
 // prepare creates a 2D slice of Cells
-func (g *Grid) prepare() error {
+func (g *Grid) prepare() {
 	g.structure = make([][]*Cell, g.rows)
 	for row := range g.structure {
 		g.structure[row] = make([]*Cell, g.columns)
@@ -105,14 +107,10 @@ func (g *Grid) prepare() error {
 	for i := 0; i < g.rows; i++ {
 		for j := 0; j < g.columns; j++ {
 
-			cell, err := NewCell(i, j)
-			if err != nil {
-				return err
-			}
+			cell := NewCell(i, j)
 			g.structure[i][j] = cell
 		}
 	}
-	return nil
 }
 
 // configureCells configs each cell of the grid

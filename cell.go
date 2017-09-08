@@ -1,6 +1,8 @@
 package main
 
-import "errors"
+import (
+	"fmt"
+)
 
 // Cell is a member of the Grid
 type Cell struct {
@@ -14,20 +16,12 @@ type Cell struct {
 }
 
 // NewCell creates a new Cell on the Grid
-func NewCell(row, col int) (*Cell, error) {
-	if row < 0 {
-		return nil, errors.New("The row must positive number")
-	}
-
-	if col < 0 {
-		return nil, errors.New("The column must positive number")
-	}
-
+func NewCell(row, col int) *Cell {
 	return &Cell{
 		row:   row,
 		col:   col,
 		links: make(map[*Cell]bool),
-	}, nil
+	}
 }
 
 // Link the Cell with another Cell
@@ -89,4 +83,9 @@ func (c *Cell) Neighbors() []*Cell {
 	}
 
 	return cells
+}
+
+// String representation of Cell
+func (c *Cell) String() string {
+	return fmt.Sprintf("[%d %d]", c.row, c.col)
 }

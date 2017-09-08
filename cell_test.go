@@ -12,37 +12,19 @@ func TestNewCell(t *testing.T) {
 		links map[*Cell]bool
 	}
 	tests := []struct {
-		name    string
-		args    args
-		want    *Cell
-		wantErr bool
+		name string
+		args args
+		want *Cell
 	}{
 		{
-			name:    "valid row and column",
-			args:    args{col: 1, row: 1, links: map[*Cell]bool{}},
-			want:    &Cell{row: 1, col: 1, links: map[*Cell]bool{}},
-			wantErr: false,
-		},
-		{
-			name:    "invalid row and valid column",
-			args:    args{col: -1, row: 1},
-			want:    nil,
-			wantErr: true,
-		},
-		{
-			name:    "valid row and invalid column",
-			args:    args{col: 1, row: -1},
-			want:    nil,
-			wantErr: true,
+			name: "valid row and column",
+			args: args{col: 1, row: 1, links: map[*Cell]bool{}},
+			want: &Cell{row: 1, col: 1, links: map[*Cell]bool{}},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewCell(tt.args.row, tt.args.col)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("NewCell() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
+			got := NewCell(tt.args.row, tt.args.col)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewCell() = %v, want %v", got, tt.want)
 			}
@@ -57,7 +39,7 @@ func TestCell_Links(t *testing.T) {
 		links map[*Cell]bool
 	}
 
-	otherCell, _ := NewCell(1, 2)
+	otherCell := NewCell(1, 2)
 	tests := []struct {
 		name   string
 		fields fields
@@ -98,7 +80,7 @@ func TestCell_IsLinked(t *testing.T) {
 		cell *Cell
 	}
 
-	otherCell, _ := NewCell(1, 2)
+	otherCell := NewCell(1, 2)
 	tests := []struct {
 		name   string
 		fields fields
@@ -143,10 +125,10 @@ func TestCell_Neighbors(t *testing.T) {
 		west  *Cell
 	}
 
-	north, _ := NewCell(0, 1)
-	south, _ := NewCell(2, 1)
-	east, _ := NewCell(1, 2)
-	west, _ := NewCell(1, 0)
+	north := NewCell(0, 1)
+	south := NewCell(2, 1)
+	east := NewCell(1, 2)
+	west := NewCell(1, 0)
 
 	tests := []struct {
 		name   string
@@ -207,7 +189,7 @@ func TestCell_Link(t *testing.T) {
 		bidi bool
 	}
 
-	otherCell, _ := NewCell(1, 2)
+	otherCell := NewCell(1, 2)
 	tests := []struct {
 		name   string
 		fields fields
@@ -248,7 +230,7 @@ func TestCell_Unlink(t *testing.T) {
 		bidi bool
 	}
 
-	otherCell, _ := NewCell(1, 2)
+	otherCell := NewCell(1, 2)
 	tests := []struct {
 		name   string
 		fields fields
@@ -273,6 +255,37 @@ func TestCell_Unlink(t *testing.T) {
 
 			if got := c.IsLinked(otherCell); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("c.IsLinked(otherCell) = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestCell_String(t *testing.T) {
+	type fields struct {
+		row   int
+		col   int
+		links map[*Cell]bool
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   string
+	}{
+		{
+			name:   "the string representation of the cell contains the [row, col]",
+			fields: fields{row: 1, col: 1, links: map[*Cell]bool{}},
+			want:   "[1 1]",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Cell{
+				row:   tt.fields.row,
+				col:   tt.fields.col,
+				links: tt.fields.links,
+			}
+			if got := c.String(); got != tt.want {
+				t.Errorf("Cell.String() = %v, want %v", got, tt.want)
 			}
 		})
 	}
