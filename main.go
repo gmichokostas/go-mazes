@@ -12,7 +12,7 @@ func main() {
 		fmt.Printf("Error create new grid: %v", err)
 	}
 	btree.On(grid)
-	grid.ToImage()
+	ToImage(grid, "out")
 
 	fmt.Println(grid)
 }

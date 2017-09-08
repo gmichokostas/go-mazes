@@ -3,12 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
-	"image"
-	"image/color"
-	"image/draw"
-	"image/png"
 	"math/rand"
-	"os"
 )
 
 // Grid is a container of cells
@@ -99,56 +94,6 @@ func (g *Grid) String() string {
 	}
 
 	return output.String()
-}
-
-// ToImage creates an PNG image of the Grid
-func (g *Grid) ToImage() {
-	img := image.NewRGBA(image.Rect(0, 0, (10 * g.columns), (10 * g.rows)))
-	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)
-	for i := img.Bounds().Min.X; i < img.Bounds().Max.X; i++ {
-		img.Set(i, 0, color.Black)
-		img.Set(0, i, color.Black)
-		img.Set(img.Bounds().Max.Y-1, i, color.Black)
-		img.Set(i, img.Bounds().Max.Y-1, color.Black)
-	}
-
-	for cell := range g.EachCell() {
-		x1 := cell.col * 10
-		y1 := cell.row * 10
-		x2 := (cell.col + 1) * 10
-		y2 := (cell.row + 1) * 10
-
-		if cell.north == nil {
-			for i := x1; i <= x2; i++ {
-				img.Set(i, y1, color.Black)
-			}
-		}
-
-		if cell.west == nil {
-			for i := y1; i <= y2; i++ {
-				img.Set(x1, i, color.Black)
-			}
-		}
-
-		if cell.IsLinked(cell.east) != true {
-			for i := y1; i <= y2; i++ {
-				img.Set(x2, i, color.Black)
-			}
-		}
-
-		if cell.IsLinked(cell.south) != true {
-			for i := x1; i <= x2; i++ {
-				img.Set(i, y2, color.Black)
-			}
-		}
-	}
-
-	f, err := os.Create("out.png")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	png.Encode(f, img)
 }
 
 // prepare creates a 2D slice of Cells
