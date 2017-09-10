@@ -8,17 +8,16 @@ import (
 	"os"
 )
 
+var (
+	bgColor   = color.White
+	lineColor = color.Black
+	cellSize  = 10
+)
+
 // ToImage creates a PNG image of the given Grid
 func ToImage(grid *Grid, filename string) {
-	img := image.NewRGBA(image.Rect(0, 0, (10 * grid.columns), (10 * grid.rows)))
-	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)
-
-	for i := img.Bounds().Min.X; i < img.Bounds().Max.X; i++ {
-		img.Set(i, 0, color.Black)
-		img.Set(0, i, color.Black)
-		img.Set(img.Bounds().Max.Y-1, i, color.Black)
-		img.Set(i, img.Bounds().Max.Y-1, color.Black)
-	}
+	img := image.NewRGBA(image.Rect(0, 0, (cellSize*grid.columns + 1), (cellSize*grid.rows + 1)))
+	draw.Draw(img, img.Bounds(), &image.Uniform{bgColor}, image.ZP, draw.Src)
 
 	// draw each cell's wall
 	for cell := range grid.EachCell() {
@@ -29,30 +28,22 @@ func ToImage(grid *Grid, filename string) {
 
 		if cell.north == nil {
 			// top horizontal line
-			for i := x1; i <= x2; i++ {
-				img.Set(i, y1, color.Black)
-			}
+			horLine(x1, x2, y1, img)
 		}
 
 		if cell.west == nil {
 			// right vertical line
-			for i := y1; i <= y2; i++ {
-				img.Set(x1, i, color.Black)
-			}
+			verLine(y1, y2, x1, img)
 		}
 
 		if cell.IsLinked(cell.east) != true {
 			// left vertical line
-			for i := y1; i <= y2; i++ {
-				img.Set(x2, i, color.Black)
-			}
+			verLine(y1, y2, x2, img)
 		}
 
 		if cell.IsLinked(cell.south) != true {
 			// bottom horizontal line
-			for i := x1; i <= x2; i++ {
-				img.Set(i, y2, color.Black)
-			}
+			horLine(x1, x2, y2, img)
 		}
 	}
 
@@ -62,4 +53,18 @@ func ToImage(grid *Grid, filename string) {
 	}
 	defer f.Close()
 	png.Encode(f, img)
+}
+
+// horLine draws a horizontal line from minX to maxX
+func horLine(minX, maxX, y int, img *image.RGBA) {
+	for ; minX <= maxX; minX++ {
+		img.Set(minX, y, lineColor)
+	}
+}
+
+// verLine draws a vertical line from minY to maxY
+func verLine(minY, maxY, x int, img *image.RGBA) {
+	for ; minY <= maxY; minY++ {
+		img.Set(x, minY, lineColor)
+	}
 }
