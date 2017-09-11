@@ -47,47 +47,41 @@ func (g *Grid) RandomCell() *Cell {
 func (g *Grid) String() string {
 	var output bytes.Buffer
 
-	output.WriteString("+")
-	for i := 1; i <= g.columns; i++ {
-		output.WriteString("---+")
+	for column := 0; column < g.columns; column++ {
+		output.WriteString("+---")
 	}
-	output.WriteString("\n")
+	output.WriteString("+\n")
 
-	for row := range g.EachRow() {
-		var top bytes.Buffer
+	for row := 0; row < g.rows; row++ {
 		var bottom bytes.Buffer
-
-		top.WriteString("|")
 		bottom.WriteString("+")
 
-		for _, cell := range row {
-			if cell == nil {
-				cell = NewCell(-1, -1)
+		for column := 0; column < g.columns; column++ {
+			cell := g.cell(row, column)
+
+			if column == 0 {
+				if cell.IsLinked(cell.west) == true {
+					output.WriteString(" ")
+				} else {
+					output.WriteString("|")
+				}
 			}
-			body := "   "
-			eastBoundary := func() string {
-				if cell.IsLinked(cell.east) {
-					return " "
-				}
-				return "|"
-			}()
 
-			top.WriteString(body)
-			top.WriteString(eastBoundary)
+			output.WriteString("   ")
+			if cell.IsLinked(cell.east) == true {
+				output.WriteString(" ")
+			} else {
+				output.WriteString("|")
+			}
 
-			southBoundary := func() string {
-				if cell.IsLinked(cell.south) {
-					return "   "
-				}
-				return "---"
-			}()
-
-			corner := "+"
-
-			bottom.WriteString(southBoundary)
-			bottom.WriteString(corner)
+			if cell.IsLinked(cell.south) == true {
+				bottom.WriteString("   ")
+			} else {
+				bottom.WriteString("---")
+			}
+			bottom.WriteString("+")
 		}
-		output.WriteString(top.String())
+
 		output.WriteString("\n")
 		output.WriteString(bottom.String())
 		output.WriteString("\n")
