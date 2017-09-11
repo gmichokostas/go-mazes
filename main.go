@@ -5,12 +5,13 @@ import (
 )
 
 func main() {
-	grid, err := NewGrid(10, 10)
+	grid, err := NewGrid(4, 4)
 	if err != nil {
 		fmt.Printf("Error create new grid: %v", err)
 	}
 
-	BTreeOn(grid)
+	// BTreeOn(grid)
+	SideWinderOn(grid)
 	ToImage(grid, "out")
 
 	fmt.Println(grid)

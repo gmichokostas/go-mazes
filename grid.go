@@ -53,7 +53,7 @@ func (g *Grid) String() string {
 	}
 	output.WriteString("\n")
 
-	for row := range g.eachRow() {
+	for row := range g.EachRow() {
 		var top bytes.Buffer
 		var bottom bytes.Buffer
 
@@ -136,8 +136,8 @@ func (g *Grid) cell(row, col int) *Cell {
 	return g.structure[row][col]
 }
 
-// eachRow returns a chan with eachRow of the grid
-func (g *Grid) eachRow() chan []*Cell {
+// EachRow returns a chan with EachRow of the grid
+func (g *Grid) EachRow() chan []*Cell {
 	c := make(chan []*Cell)
 
 	go func() {
@@ -155,7 +155,7 @@ func (g *Grid) EachCell() chan *Cell {
 	c := make(chan *Cell)
 
 	go func() {
-		for row := range g.eachRow() {
+		for row := range g.EachRow() {
 			for _, cell := range row {
 				c <- cell
 			}
