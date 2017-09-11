@@ -5,15 +5,12 @@ import (
 	"time"
 )
 
-// BTree algorithm
-type BTree struct{}
-
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// On applies the BTree algorithm on the given Grid
-func (bt BTree) On(grid *Grid) {
+// BTreeOn applies the BTree algorithm on the given Grid
+func BTreeOn(grid *Grid) {
 	for cell := range grid.EachCell() {
 		var neighbors []*Cell
 
