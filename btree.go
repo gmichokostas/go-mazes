@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// BTree contains the BTree algorithm
+// BTree algorithm
 type BTree struct{}
 
 func init() {
@@ -15,7 +15,7 @@ func init() {
 // On applies the BTree algorithm on the given Grid
 func (bt BTree) On(grid *Grid) {
 	for cell := range grid.EachCell() {
-		neighbors := make([]*Cell, 0, 10)
+		var neighbors []*Cell
 
 		if cell.north != nil {
 			neighbors = append(neighbors, cell.north)

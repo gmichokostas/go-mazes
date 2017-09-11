@@ -21,10 +21,10 @@ func ToImage(grid *Grid, filename string) {
 
 	// draw each cell's wall
 	for cell := range grid.EachCell() {
-		x1 := cell.col * 10
-		y1 := cell.row * 10
-		x2 := (cell.col + 1) * 10
-		y2 := (cell.row + 1) * 10
+		x1 := cell.col * cellSize
+		y1 := cell.row * cellSize
+		x2 := (cell.col + 1) * cellSize
+		y2 := (cell.row + 1) * cellSize
 
 		if cell.north == nil {
 			// top horizontal line
