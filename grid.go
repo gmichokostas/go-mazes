@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"math/rand"
 )
@@ -40,54 +39,7 @@ func (g *Grid) RandomCell() *Cell {
 	row := rand.Intn(g.rows)
 	column := rand.Intn(len(g.structure[row]))
 
-	return g.cell(row, column)
-}
-
-// String representation of the Grid
-func (g *Grid) String() string {
-	var output bytes.Buffer
-
-	for column := 0; column < g.columns; column++ {
-		output.WriteString("+---")
-	}
-	output.WriteString("+\n")
-
-	for row := 0; row < g.rows; row++ {
-		var bottom bytes.Buffer
-		bottom.WriteString("+")
-
-		for column := 0; column < g.columns; column++ {
-			cell := g.cell(row, column)
-
-			if column == 0 {
-				if cell.IsLinked(cell.west) == true {
-					output.WriteString(" ")
-				} else {
-					output.WriteString("|")
-				}
-			}
-
-			output.WriteString("   ")
-			if cell.IsLinked(cell.east) == true {
-				output.WriteString(" ")
-			} else {
-				output.WriteString("|")
-			}
-
-			if cell.IsLinked(cell.south) == true {
-				bottom.WriteString("   ")
-			} else {
-				bottom.WriteString("---")
-			}
-			bottom.WriteString("+")
-		}
-
-		output.WriteString("\n")
-		output.WriteString(bottom.String())
-		output.WriteString("\n")
-	}
-
-	return output.String()
+	return g.Cell(row, column)
 }
 
 // prepare creates a 2D slice of Cells
@@ -111,15 +63,15 @@ func (g *Grid) configureCells() {
 	for cell := range g.EachCell() {
 		row, col := cell.row, cell.col
 
-		cell.north = g.cell(row-1, col)
-		cell.south = g.cell(row+1, col)
-		cell.east = g.cell(row, col+1)
-		cell.west = g.cell(row, col-1)
+		cell.north = g.Cell(row-1, col)
+		cell.south = g.Cell(row+1, col)
+		cell.east = g.Cell(row, col+1)
+		cell.west = g.Cell(row, col-1)
 	}
 }
 
-// cell returns the cell at the row - col
-func (g *Grid) cell(row, col int) *Cell {
+// Cell returns the cell at the row - col
+func (g *Grid) Cell(row, col int) *Cell {
 	if row < 0 || row > (g.rows-1) {
 		return nil
 	}

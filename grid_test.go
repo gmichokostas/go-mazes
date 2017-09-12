@@ -154,7 +154,7 @@ func TestGrid_cell(t *testing.T) {
 				columns:   tt.fields.columns,
 				structure: tt.fields.structure,
 			}
-			if got := g.cell(tt.args.row, tt.args.col); !reflect.DeepEqual(got, tt.want) {
+			if got := g.Cell(tt.args.row, tt.args.col); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Grid.cell() = %v, want %v", got, tt.want)
 			}
 		})

@@ -89,3 +89,32 @@ func (c *Cell) Neighbors() []*Cell {
 func (c *Cell) String() string {
 	return fmt.Sprintf("[%d %d]", c.row, c.col)
 }
+
+// Distances applies Dijkstra's algorithm to calculate
+// the distance of a cell from a reference cell
+func (c *Cell) Distances() Distances {
+	distances := NewDistances(c)
+	frontier := []*Cell{c}
+
+	for {
+		if len(frontier) == 0 {
+			break
+		}
+
+		var newFrontier []*Cell
+		for _, cell := range frontier {
+			for _, linked := range cell.Links() {
+
+				if distances.Contains(linked) == true {
+					continue
+				}
+
+				distances.SetDistance(linked, distances.GetDistance(cell)+1)
+				newFrontier = append(newFrontier, linked)
+			}
+		}
+
+		frontier = newFrontier
+	}
+	return distances
+}

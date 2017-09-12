@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 )
 
 var (
@@ -15,12 +16,20 @@ func main() {
 
 	grid, err := NewGrid(*rows, *columns)
 	if err != nil {
-		fmt.Printf("Error create new grid: %v", err)
+		fmt.Fprintf(os.Stderr, "Error create new grid: %v\n", err)
+		os.Exit(2)
 	}
 
 	// BTreeOn(grid)
 	SideWinderOn(grid)
+
+	distanceGrid := NewDistanceGrid(grid.Cell(0, 0))
+	distancePrinter := NewGridPrinter(grid, distanceGrid)
+	fmt.Println(distancePrinter.PrintGrid())
+
+	whitespacePrinter := NewGridPrinter(grid, WhiteSpaceGrid{})
+	fmt.Println(whitespacePrinter.PrintGrid())
+
 	ToImage(grid, "out")
 
-	fmt.Println(grid)
 }
