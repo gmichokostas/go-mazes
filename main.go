@@ -23,7 +23,8 @@ func main() {
 	// BTreeOn(grid)
 	SideWinderOn(grid)
 
-	distanceGrid := NewDistanceGrid(grid.Cell(0, 0))
+	rootCell := grid.Cell(0, 0)
+	distanceGrid := NewDistanceGrid(rootCell)
 	distancePrinter := NewGridPrinter(grid, distanceGrid)
 	fmt.Println(distancePrinter.PrintGrid())
 

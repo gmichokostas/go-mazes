@@ -34,7 +34,7 @@ func (d Distances) Contains(cell *Cell) bool {
 
 // Cells returns all the cells
 func (d Distances) Cells() []*Cell {
-	var keys []*Cell
+	keys := make([]*Cell, len(d.cells))
 
 	i := 0
 	for key := range d.cells {
