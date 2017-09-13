@@ -20,34 +20,37 @@ func main() {
 		os.Exit(2)
 	}
 
-	// BTreeOn(grid)
-	SideWinderOn(grid)
+	BTreeOn(grid)
+	// SideWinderOn(grid)
 
-	distances := grid.Cell(0, 0).Distances()
-	distanceGrid := NewDistanceGrid(distances)
+	distances := grid.Cell(grid.rows/2, grid.columns/2).Distances()
+	img := ImageableGrid{Grid: grid, Distances: &distances}
+	img.ToImage("out")
 
-	distancePrinter := NewGridPrinter(grid, distanceGrid)
-	fmt.Println(distancePrinter.PrintGrid())
+	// distances := grid.Cell(0, 0).Distances()
+	// distanceGrid := NewDistanceGrid(distances)
 
-	ds := distances.PathTo(grid.Cell(grid.rows-1, 0))
-	distanced := NewDistanceGrid(ds)
+	// distancePrinter := NewGridPrinter(grid, distanceGrid)
+	// fmt.Println(distancePrinter.PrintGrid())
 
-	distancedPrinter := NewGridPrinter(grid, distanced)
-	fmt.Println(distancedPrinter.PrintGrid())
+	// ds := distances.PathTo(grid.Cell(grid.rows-1, 0))
+	// distanced := NewDistanceGrid(ds)
 
-	start := distanceGrid.rootCell
-	newDistances := start.Distances()
-	newStart, _ := newDistances.Max()
+	// distancedPrinter := NewGridPrinter(grid, distanced)
+	// fmt.Println(distancedPrinter.PrintGrid())
 
-	newDistances = newStart.Distances()
-	goal, _ := newDistances.Max()
+	// start := distanceGrid.rootCell
+	// newDistances := start.Distances()
+	// newStart, _ := newDistances.Max()
 
-	maxDis := newDistances.PathTo(goal)
-	max := NewDistanceGrid(maxDis)
+	// newDistances = newStart.Distances()
+	// goal, _ := newDistances.Max()
 
-	mx := NewGridPrinter(grid, max)
-	fmt.Println(mx.PrintGrid())
+	// maxDis := newDistances.PathTo(goal)
+	// max := NewDistanceGrid(maxDis)
 
-	ToImage(grid, "out")
+	// mx := NewGridPrinter(grid, max)
+	// fmt.Println(mx.PrintGrid())
 
+	// ToImage(grid, "out")
 }
