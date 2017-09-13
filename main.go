@@ -22,8 +22,8 @@ func main() {
 		os.Exit(2)
 	}
 
-	maze.BTreeOn(grid)
-	// SideWinderOn(grid)
+	// maze.BTreeOn(grid)
+	maze.SideWinderOn(grid)
 
 	distances := grid.Cell(0, 0).Distances()
 	img := maze.ImageableGrid{Grid: grid, Distances: &distances}
