@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/gmichokostas/go-mazes/maze"
 )
 
 var (
@@ -14,17 +16,17 @@ var (
 func main() {
 	flag.Parse()
 
-	grid, err := NewGrid(*rows, *columns)
+	grid, err := maze.NewGrid(*rows, *columns)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error create new grid: %v\n", err)
 		os.Exit(2)
 	}
 
-	BTreeOn(grid)
+	maze.BTreeOn(grid)
 	// SideWinderOn(grid)
 
-	distances := grid.Cell(grid.rows/2, grid.columns/2).Distances()
-	img := ImageableGrid{Grid: grid, Distances: &distances}
+	distances := grid.Cell(0, 0).Distances()
+	img := maze.ImageableGrid{Grid: grid, Distances: &distances}
 	img.ToImage("out")
 
 	// distances := grid.Cell(0, 0).Distances()

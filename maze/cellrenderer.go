@@ -1,4 +1,4 @@
-package main
+package maze
 
 // CellRenderer is an interface that supports
 // the rendering of a given cell

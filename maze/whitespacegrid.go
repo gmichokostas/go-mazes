@@ -1,4 +1,4 @@
-package main
+package maze
 
 // WhiteSpaceGrid cells are rendered as whitespaces
 type WhiteSpaceGrid struct{}

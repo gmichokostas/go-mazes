@@ -1,4 +1,4 @@
-package main
+package maze
 
 // Distances records the distance
 // of each cell from the root cell
