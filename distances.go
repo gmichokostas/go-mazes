@@ -3,6 +3,7 @@ package main
 // Distances records the distance
 // of each cell from the root cell
 type Distances struct {
+	root  *Cell
 	cells map[*Cell]int
 }
 
@@ -11,6 +12,7 @@ type Distances struct {
 func NewDistances(cell *Cell) Distances {
 	return Distances{
 		cells: map[*Cell]int{cell: 0},
+		root:  cell,
 	}
 }
 
@@ -43,4 +45,27 @@ func (d Distances) Cells() []*Cell {
 	}
 
 	return keys
+}
+
+// PathTo finds the path between to cells
+func (d Distances) PathTo(goal *Cell) Distances {
+	current := goal
+	breadcrumbs := NewDistances(d.root)
+	breadcrumbs.SetDistance(current, d.GetDistance(current))
+
+	for {
+		if current == d.root {
+			break
+		}
+
+		for _, neighbor := range current.Links() {
+			if d.GetDistance(neighbor) < d.GetDistance(current) {
+				breadcrumbs.SetDistance(neighbor, d.GetDistance(neighbor))
+				current = neighbor
+				break
+			}
+		}
+	}
+
+	return breadcrumbs
 }

@@ -6,16 +6,22 @@ import (
 
 // DistanceGrid contains the root cell
 type DistanceGrid struct {
-	rootCell *Cell
+	rootCell  *Cell
+	distances Distances
 }
 
 // NewDistanceGrid creates a new DistanceGrid
 // counting the distances from the root cell
-func NewDistanceGrid(rootcell *Cell) DistanceGrid {
-	return DistanceGrid{rootCell: rootcell}
+func NewDistanceGrid(distances Distances) DistanceGrid {
+	return DistanceGrid{rootCell: distances.root, distances: distances}
 }
 
 // Render renders the distance of the given cell from the root cell
 func (g DistanceGrid) Render(currentcell *Cell) string {
-	return " " + strconv.FormatInt(int64(currentcell.Distances().GetDistance(g.rootCell)), 36) + " "
+	distance := " "
+	if g.rootCell == currentcell || g.distances.GetDistance(currentcell) != 0 {
+		distance = strconv.FormatInt(int64(g.distances.GetDistance(currentcell)), 36)
+	}
+
+	return " " + distance + " "
 }

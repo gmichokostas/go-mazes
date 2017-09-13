@@ -18,7 +18,7 @@ func TestNewDistances(t *testing.T) {
 		{
 			name: "returns a new Distance with the root cell initialized",
 			args: args{cell: cell},
-			want: Distances{cells: map[*Cell]int{cell: 0}},
+			want: Distances{root: cell, cells: map[*Cell]int{cell: 0}},
 		},
 	}
 	for _, tt := range tests {

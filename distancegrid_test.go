@@ -20,12 +20,12 @@ func TestNewDistanceGrid(t *testing.T) {
 		{
 			name: "returns an initialized DistanceGrid",
 			args: args{rootCell: root},
-			want: DistanceGrid{rootCell: root},
+			want: DistanceGrid{rootCell: root, distances: root.Distances()},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewDistanceGrid(tt.args.rootCell); !reflect.DeepEqual(got, tt.want) {
+			if got := NewDistanceGrid(tt.args.rootCell.Distances()); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewDistanceGrid() = %v, want %v", got, tt.want)
 			}
 		})
