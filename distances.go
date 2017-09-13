@@ -69,3 +69,18 @@ func (d Distances) PathTo(goal *Cell) Distances {
 
 	return breadcrumbs
 }
+
+// Max finds the cell that has the longest distance from the root cell
+// returns the cell and the distance
+func (d Distances) Max() (maxCell *Cell, maxDistance int) {
+	maxDistance = 0
+	maxCell = d.root
+
+	for cell, distance := range d.cells {
+		if distance > maxDistance {
+			maxCell = cell
+			maxDistance = distance
+		}
+	}
+	return
+}
